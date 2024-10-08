@@ -13,13 +13,11 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `npx cdk diff`    compare deployed stack with current state
 * `npx cdk synth`   emits the synthesized CloudFormation template
 
-
-## Link docker-compose to main directory
+## Create SSL Certified with all the domains
+### Example
 ```bash
-ln ./docker-compose.yml ../
-```
-
-## Link docker-compose to main directory
-```bash
-docker-compose up --build
+api.suezm.com
+suezm.com
+api.suezm.com
+dev.suezm.com
 ```
