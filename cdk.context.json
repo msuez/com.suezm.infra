@@ -1,0 +1,14 @@
+{
+  "availability-zones:account=780673962482:region=us-east-1": [
+    "us-east-1a",
+    "us-east-1b",
+    "us-east-1c",
+    "us-east-1d",
+    "us-east-1e",
+    "us-east-1f"
+  ],
+  "hosted-zone:account=780673962482:domainName=suezm.com:region=us-east-1": {
+    "Id": "/hostedzone/Z094459732QAD5QMC938P",
+    "Name": "suezm.com."
+  }
+}

@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+
+  nats:
+    image: nats:latest
+    ports:
+      - "4222:4222"
+    networks:
+      - suezm_network
+
+  suezm-api:
+    build: ./com.suezm.api
+    volumes:
+      - ./com.suezm.api:/usr/src/app
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=local
+      - AUTH_LAMBDA_NAME="pro-AuthLambda"
+      - NOTIFICATIONS_LAMBDA_NAME="pro-NotificationsLambda"
+    depends_on:
+      - nats
+    networks:
+      - suezm_network
+
+  suezm-micro-auth:
+    build: ./com.suezm.micro.auth
+    volumes:
+      - ./com.suezm.micro.auth:/usr/src/app
+      - ./com.suezm.micro.auth/src/config/keys:/usr/src/app/src/config/keys
+    command: npm run dev
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=local
+      - DATABASE_CONNECTION_STRING=postgres://auroraUser:123456@postgres-auth:5432/authdb
+    depends_on:
+      - suezm-api
+      - postgres-auth
+    networks:
+      - suezm_network
+
+  suezm-micro-notifications:
+    build: ./com.suezm.micro.notifications
+    volumes:
+      - ./com.suezm.micro.notifications:/usr/src/app
+    command: npm run dev
+    ports:
+      - "3002:3000"
+    environment:
+      - NODE_ENV=local
+      - DATABASE_CONNECTION_STRING=postgres://auroraUser:123456@postgres-notifications:5432/notificationsdb
+    depends_on:
+      - suezm-api
+      - postgres-notifications
+    networks:
+      - suezm_network
+
+  postgres-auth:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: auroraUser
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: authdb
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres-auth-data:/var/lib/postgresql/data
+    networks:
+      - suezm_network
+
+  postgres-notifications:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: auroraUser
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: notificationsdb
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres-notifications-data:/var/lib/postgresql/data
+    networks:
+      - suezm_network
+
+volumes:
+  postgres-auth-data:
+  postgres-notifications-data:
+
+networks:
+  suezm_network:
+    driver: bridge
