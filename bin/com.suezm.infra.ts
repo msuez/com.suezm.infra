@@ -31,3 +31,21 @@ new SUEZMStack(app, `${PROJECT_NAME}-Stack`, {
   sslCertificate: networkStack.sslCertificate,
   env: { region: AWS_REGION, account: AWS_ACCOUNT_ID, },
 });
+
+// new SUEZMStack(app, `${PROJECT_NAME}-Stack`, {
+//   environment: 'stg',
+//   vpc: networkStack.vpc,
+//   domainName: PROJECT_DOMAIN,
+//   hostedZone: networkStack.hostedZone,
+//   sslCertificate: networkStack.sslCertificate,
+//   env: { region: AWS_REGION, account: AWS_ACCOUNT_ID, },
+// });
+
+// new SUEZMStack(app, `${PROJECT_NAME}-Stack`, {
+//   environment: 'dev',
+//   vpc: networkStack.vpc,
+//   domainName: PROJECT_DOMAIN,
+//   hostedZone: networkStack.hostedZone,
+//   sslCertificate: networkStack.sslCertificate,
+//   env: { region: AWS_REGION, account: AWS_ACCOUNT_ID, },
+// });
